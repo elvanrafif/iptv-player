@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { storage } from '../storage'
 
-export default function ChannelDetailModal({ channel, onPlay, onClose }) {
+export default function ChannelDetailModal({ channel, playlists, onPlay, onClose }) {
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
@@ -10,8 +9,7 @@ export default function ChannelDetailModal({ channel, onPlay, onClose }) {
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose])
 
-  const playlists = storage.getPlaylists()
-  const playlist = playlists.find(p => p.id === channel.playlistId)
+  const playlist = (playlists || []).find(p => p.id === channel.playlistId)
 
   async function copyUrl() {
     await navigator.clipboard.writeText(channel.url)
@@ -32,7 +30,6 @@ export default function ChannelDetailModal({ channel, onPlay, onClose }) {
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="detail-modal" onClick={e => e.stopPropagation()}>
-
         <div className="detail-header">
           {channel.logo
             ? <img src={channel.logo} alt="" className="detail-logo" onError={e => { e.target.style.display = 'none' }} />
@@ -43,7 +40,6 @@ export default function ChannelDetailModal({ channel, onPlay, onClose }) {
             <span className="detail-group">{channel.group}</span>
           </div>
         </div>
-
         <div className="detail-fields">
           {fields.map(f => (
             <div key={f.label} className="detail-row">
@@ -56,17 +52,11 @@ export default function ChannelDetailModal({ channel, onPlay, onClose }) {
             <span className="detail-url">{channel.url}</span>
           </div>
         </div>
-
         <div className="detail-actions">
-          <button className="detail-btn-play" onClick={() => { onPlay(channel); onClose() }}>
-            ▶ Putar
-          </button>
-          <button className="detail-btn-copy" onClick={copyUrl}>
-            {copied ? '✓ Tersalin' : '⎘ Salin URL'}
-          </button>
+          <button className="detail-btn-play" onClick={() => { onPlay(channel); onClose() }}>▶ Putar</button>
+          <button className="detail-btn-copy" onClick={copyUrl}>{copied ? '✓ Tersalin' : '⎘ Salin URL'}</button>
           <button className="detail-btn-close" onClick={onClose}>Tutup</button>
         </div>
-
       </div>
     </div>
   )

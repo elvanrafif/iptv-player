@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Hls from 'hls.js'
-import { storage } from '../storage'
+import * as api from '../api'
 
 export default function Player({ channel }) {
   const videoRef = useRef(null)
@@ -10,14 +10,11 @@ export default function Player({ channel }) {
   useEffect(() => {
     if (!channel || !videoRef.current) return
 
-    storage.addToHistory(channel)
+    api.addToHistory(channel)
     setStreamError(null)
 
     const video = videoRef.current
-    if (hlsRef.current) {
-      hlsRef.current.destroy()
-      hlsRef.current = null
-    }
+    if (hlsRef.current) { hlsRef.current.destroy(); hlsRef.current = null }
 
     if (Hls.isSupported()) {
       const hls = new Hls()
@@ -29,15 +26,11 @@ export default function Player({ channel }) {
         if (data.fatal) setStreamError('Stream tidak tersedia atau error.')
       })
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      // Safari native HLS
       video.src = channel.url
       video.play().catch(() => {})
     }
 
-    return () => {
-      hlsRef.current?.destroy()
-      hlsRef.current = null
-    }
+    return () => { hlsRef.current?.destroy(); hlsRef.current = null }
   }, [channel?.url])
 
   return (

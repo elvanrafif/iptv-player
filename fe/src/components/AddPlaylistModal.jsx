@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { parseM3U } from '../parseM3U'
-import { storage } from '../storage'
+import * as api from '../api'
 
 export default function AddPlaylistModal({ onClose, onPlaylistAdded }) {
   const [name, setName] = useState('')
@@ -17,13 +17,10 @@ export default function AddPlaylistModal({ onClose, onPlaylistAdded }) {
       const res = await fetch(url.trim())
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const text = await res.text()
-      const id = crypto.randomUUID()
-      const channels = parseM3U(text, id)
+      const playlist = await api.addPlaylist(name.trim(), url.trim())
+      const channels = parseM3U(text, playlist.id)
       if (channels.length === 0) throw new Error('Tidak ada channel ditemukan.')
-      // Store only metadata (no channels) — channels go to App state
-      storage.addPlaylist(name.trim(), url.trim(), id)
-      onPlaylistAdded(id, null, url.trim())
-      onClose()
+      onPlaylistAdded(playlist, null)
     } catch (err) {
       setError(`Gagal: ${err.message}`)
     } finally {
@@ -36,16 +33,14 @@ export default function AddPlaylistModal({ onClose, onPlaylistAdded }) {
     if (!file) return
     if (!name.trim()) return setError('Isi nama playlist dulu.')
     const reader = new FileReader()
-    reader.onload = (ev) => {
+    reader.onload = async (ev) => {
       try {
-        const id = crypto.randomUUID()
-        const channels = parseM3U(ev.target.result, id)
+        const playlist = await api.addPlaylist(name.trim(), null)
+        const channels = parseM3U(ev.target.result, playlist.id)
         if (channels.length === 0) return setError('Tidak ada channel ditemukan.')
-        storage.addPlaylist(name.trim(), null, id)
-        onPlaylistAdded(id, channels, null)
-        onClose()
+        onPlaylistAdded(playlist, channels)
       } catch {
-        setError('Gagal parse file M3U.')
+        setError('Gagal menyimpan playlist.')
       }
     }
     reader.readAsText(file)
@@ -58,19 +53,15 @@ export default function AddPlaylistModal({ onClose, onPlaylistAdded }) {
         <form onSubmit={handleUrlSubmit}>
           <label>Nama Playlist</label>
           <input value={name} onChange={e => setName(e.target.value)} placeholder="contoh: My IPTV" />
-
           <label>URL Playlist</label>
           <input value={url} onChange={e => setUrl(e.target.value)} placeholder="http://..." />
           <button type="submit" disabled={loading}>{loading ? 'Loading...' : 'Import dari URL'}</button>
         </form>
-
         <div className="modal-divider">atau</div>
-
         <label className="file-upload-label">
           Upload File .m3u
           <input type="file" accept=".m3u,.m3u8" onChange={handleFileUpload} hidden />
         </label>
-
         {error && <p className="modal-error">{error}</p>}
         <button className="modal-close" onClick={onClose}>Batal</button>
       </div>
