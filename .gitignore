@@ -1,6 +1,14 @@
 # PocketBase
+pb/pocketbase
 pb/pb_data
 pb/pb_public
 
+# Frontend build artifacts
+fe/dist
+fe/node_modules
+
 # Misc
 .DS_Store
+node_modules
+dist
+.vite
