@@ -33,6 +33,7 @@ migrate((app) => {
         deleteRule: "user = @request.auth.id",
     })
     app.save(playlists)
+    const playlistsId = app.findCollectionByNameOrId("playlists").id
 
     // ── favorites ─────────────────────────────────────────────────────────
     const favorites = new Collection({
@@ -51,7 +52,7 @@ migrate((app) => {
                 name: "playlist",
                 type: "relation",
                 required: true,
-                collectionId: "playlists",
+                collectionId: playlistsId,
                 cascadeDelete: true,
                 maxSelect: 1,
             },
@@ -101,7 +102,7 @@ migrate((app) => {
                 name: "playlist",
                 type: "relation",
                 required: true,
-                collectionId: "playlists",
+                collectionId: playlistsId,
                 cascadeDelete: true,
                 maxSelect: 1,
             },
