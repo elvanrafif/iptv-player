@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { storage } from '../storage'
 import AddPlaylistModal from './AddPlaylistModal'
 
-export default function Sidebar({ activeView, onSelectView }) {
+export default function Sidebar({ activeView, onSelectView, channelCache, loadingPlaylists, onPlaylistAdded }) {
   const [playlists, setPlaylists] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [expanded, setExpanded] = useState({})
@@ -29,6 +29,11 @@ export default function Sidebar({ activeView, onSelectView }) {
     return JSON.stringify(activeView) === JSON.stringify(view)
   }
 
+  function handleAdded(playlistId, channels, sourceUrl) {
+    refresh()
+    onPlaylistAdded(playlistId, channels, sourceUrl)
+  }
+
   return (
     <>
       <div className="sidebar-header">📺 IPTV Player</div>
@@ -52,7 +57,9 @@ export default function Sidebar({ activeView, onSelectView }) {
 
       <div className="sidebar-playlists">
         {playlists.map(pl => {
-          const groups = [...new Set(pl.channels.map(c => c.group))]
+          const channels = channelCache[pl.id] || []
+          const groups = [...new Set(channels.map(c => c.group))]
+          const isLoading = loadingPlaylists[pl.id]
           return (
             <div key={pl.id} className="playlist-section">
               <div className="playlist-header" onClick={() => toggleExpand(pl.id)}>
@@ -61,6 +68,10 @@ export default function Sidebar({ activeView, onSelectView }) {
               </div>
               {expanded[pl.id] && (
                 <div className="group-list">
+                  {isLoading && <div className="sidebar-loading">Memuat...</div>}
+                  {!isLoading && groups.length === 0 && (
+                    <div className="sidebar-loading">Tidak ada channel.</div>
+                  )}
                   {groups.map(group => (
                     <button
                       key={group}
@@ -84,7 +95,10 @@ export default function Sidebar({ activeView, onSelectView }) {
       </div>
 
       {showModal && (
-        <AddPlaylistModal onClose={() => setShowModal(false)} onAdded={refresh} />
+        <AddPlaylistModal
+          onClose={() => setShowModal(false)}
+          onPlaylistAdded={handleAdded}
+        />
       )}
     </>
   )

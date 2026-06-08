@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { storage } from '../storage'
 
-export default function ChannelList({ view, activeChannel, onSelectChannel }) {
+export default function ChannelList({ view, activeChannel, onSelectChannel, channelCache }) {
   const [channels, setChannels] = useState([])
   const [favorites, setFavorites] = useState([])
 
@@ -18,10 +18,10 @@ export default function ChannelList({ view, activeChannel, onSelectChannel }) {
     } else if (view.type === 'history') {
       setChannels(storage.getHistory().map(h => h.channel))
     } else if (view.type === 'group') {
-      const playlist = storage.getPlaylists().find(p => p.id === view.playlistId)
-      setChannels(playlist ? playlist.channels.filter(c => c.group === view.group) : [])
+      const all = channelCache[view.playlistId] || []
+      setChannels(all.filter(c => c.group === view.group))
     }
-  }, [view])
+  }, [view, channelCache])
 
   function toggleFav(e, channel) {
     e.stopPropagation()

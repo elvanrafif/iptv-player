@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { parseM3U } from '../parseM3U'
 import { storage } from '../storage'
 
-export default function AddPlaylistModal({ onClose, onAdded }) {
+export default function AddPlaylistModal({ onClose, onPlaylistAdded }) {
   const [name, setName] = useState('')
   const [url, setUrl] = useState('')
   const [error, setError] = useState('')
@@ -20,8 +20,9 @@ export default function AddPlaylistModal({ onClose, onAdded }) {
       const id = crypto.randomUUID()
       const channels = parseM3U(text, id)
       if (channels.length === 0) throw new Error('Tidak ada channel ditemukan.')
-      storage.addPlaylist(name.trim(), url.trim(), channels, id)
-      onAdded()
+      // Store only metadata (no channels) — channels go to App state
+      storage.addPlaylist(name.trim(), url.trim(), id)
+      onPlaylistAdded(id, null, url.trim())
       onClose()
     } catch (err) {
       setError(`Gagal: ${err.message}`)
@@ -40,8 +41,8 @@ export default function AddPlaylistModal({ onClose, onAdded }) {
         const id = crypto.randomUUID()
         const channels = parseM3U(ev.target.result, id)
         if (channels.length === 0) return setError('Tidak ada channel ditemukan.')
-        storage.addPlaylist(name.trim(), null, channels, id)
-        onAdded()
+        storage.addPlaylist(name.trim(), null, id)
+        onPlaylistAdded(id, channels, null)
         onClose()
       } catch {
         setError('Gagal parse file M3U.')

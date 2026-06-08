@@ -18,15 +18,15 @@ describe('playlists', () => {
   })
 
   it('adds and retrieves a playlist', () => {
-    storage.addPlaylist('My Playlist', 'http://example.com/playlist.m3u', [mockChannel])
+    storage.addPlaylist('My Playlist', 'http://example.com/playlist.m3u')
     const playlists = storage.getPlaylists()
     expect(playlists).toHaveLength(1)
     expect(playlists[0].name).toBe('My Playlist')
-    expect(playlists[0].channels).toHaveLength(1)
+    expect(playlists[0].sourceUrl).toBe('http://example.com/playlist.m3u')
   })
 
   it('removes a playlist by id', () => {
-    storage.addPlaylist('My Playlist', null, [mockChannel])
+    storage.addPlaylist('My Playlist', null)
     const id = storage.getPlaylists()[0].id
     storage.removePlaylist(id)
     expect(storage.getPlaylists()).toHaveLength(0)

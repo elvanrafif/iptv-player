@@ -26,9 +26,10 @@ export const storage = {
   getPlaylists() {
     return read(KEYS.playlists)
   },
-  addPlaylist(name, sourceUrl, channels, id = crypto.randomUUID()) {
+  // channels are NOT stored here — kept in App state to avoid localStorage quota issues
+  addPlaylist(name, sourceUrl, id = crypto.randomUUID()) {
     const playlists = read(KEYS.playlists)
-    playlists.push({ id, name, sourceUrl: sourceUrl ?? null, addedAt: Date.now(), channels })
+    playlists.push({ id, name, sourceUrl: sourceUrl ?? null, addedAt: Date.now() })
     write(KEYS.playlists, playlists)
   },
   removePlaylist(id) {
