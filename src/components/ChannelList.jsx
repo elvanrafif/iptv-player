@@ -48,6 +48,11 @@ export default function ChannelList({ view, activeChannel, onSelectChannel }) {
         {view.type === 'group' && view.group}
         <span className="channel-count">{channels.length} channel</span>
       </div>
+      {channels.length === 0 && (
+        <div className="channel-list-empty">
+          <p>{view.type === 'favorites' ? 'Belum ada favorit.' : view.type === 'history' ? 'Belum ada history.' : 'Tidak ada channel.'}</p>
+        </div>
+      )}
       <div className="channel-grid">
         {channels.map((ch, i) => (
           <div

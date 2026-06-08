@@ -160,3 +160,7 @@ body { background: var(--bg); color: var(--text); font-family: system-ui, sans-s
   background: #000;
   display: block;
 }
+.player-error {
+  padding: 2rem; text-align: center; color: var(--accent);
+  font-size: 0.9rem; background: #000;
+}
