@@ -46,10 +46,8 @@ export default function Player({ channel }) {
         {channel.logo && <img src={channel.logo} alt="" className="player-logo" onError={e => { e.target.style.display = 'none' }} />}
         <span>{channel.name}</span>
       </div>
-      {streamError
-        ? <div className="player-error">{streamError}</div>
-        : <video ref={videoRef} className="player-video" controls playsInline />
-      }
+      {streamError && <div className="player-error">{streamError}</div>}
+      <video ref={videoRef} className="player-video" controls playsInline style={{ display: streamError ? 'none' : 'block' }} />
     </div>
   )
 }
