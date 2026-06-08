@@ -1,0 +1,95 @@
+<h2>IPTV Player — Layout Options</h2>
+<p class="subtitle">Pilih layout yang paling cocok untuk kamu</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0f0f0f;padding:12px;font-family:monospace;font-size:11px;color:#ccc;height:160px;display:flex;flex-direction:column;gap:4px;">
+      <div style="background:#1a1a2e;padding:6px 10px;border-radius:4px;color:#e94560;font-weight:bold;font-size:12px;">📺 IPTV Player</div>
+      <div style="display:flex;gap:4px;flex:1;">
+        <div style="width:38%;background:#16213e;border-radius:4px;padding:6px;display:flex;flex-direction:column;gap:3px;overflow:hidden;">
+          <div style="font-size:10px;color:#888;margin-bottom:2px;">KATEGORI</div>
+          <div style="background:#0f3460;padding:3px 6px;border-radius:3px;color:#e94560;font-size:10px;">🏆 Sport</div>
+          <div style="padding:3px 6px;font-size:10px;">📰 News</div>
+          <div style="padding:3px 6px;font-size:10px;">🎬 Movies</div>
+          <div style="padding:3px 6px;font-size:10px;">⭐ Favorit</div>
+          <div style="padding:3px 6px;font-size:10px;">🕐 History</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+          <div style="background:#1a1a2e;border-radius:4px;flex:1;display:flex;align-items:center;justify-content:center;color:#555;font-size:11px;">▶ Video Player</div>
+          <div style="background:#16213e;border-radius:4px;padding:4px;display:flex;flex-direction:column;gap:2px;height:55px;overflow:hidden;">
+            <div style="font-size:9px;color:#888;">CHANNELS</div>
+            <div style="background:#0f3460;padding:2px 5px;border-radius:2px;font-size:9px;">🔴 beIN Sports 1</div>
+            <div style="padding:2px 5px;font-size:9px;">RCTI</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Sidebar + Player</h3>
+      <p>Sidebar kiri untuk kategori & channel list, player di kanan. Layout klasik IPTV app.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0f0f0f;padding:12px;font-family:monospace;font-size:11px;color:#ccc;height:160px;display:flex;flex-direction:column;gap:4px;">
+      <div style="background:#1a1a2e;padding:6px 10px;border-radius:4px;color:#e94560;font-weight:bold;font-size:12px;">📺 IPTV Player</div>
+      <div style="background:#1a1a2e;border-radius:4px;flex:1;display:flex;align-items:center;justify-content:center;color:#555;font-size:12px;margin:2px 0;">▶ Video Player (besar)</div>
+      <div style="display:flex;gap:4px;height:40px;">
+        <div style="background:#0f3460;border-radius:4px;padding:4px 8px;display:flex;align-items:center;gap:6px;flex:1;overflow:hidden;">
+          <span style="font-size:9px;color:#e94560;white-space:nowrap;">🏆 Sport</span>
+          <span style="font-size:9px;color:#888;">|</span>
+          <span style="font-size:9px;">📰 News</span>
+          <span style="font-size:9px;color:#888;">|</span>
+          <span style="font-size:9px;">🎬 Movies</span>
+          <span style="font-size:9px;color:#888;">|</span>
+          <span style="font-size:9px;">⭐</span>
+          <span style="font-size:9px;color:#888;">|</span>
+          <span style="font-size:9px;">🕐</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:4px;height:28px;overflow:hidden;">
+        <div style="background:#16213e;border-radius:3px;padding:3px 8px;font-size:9px;display:flex;align-items:center;">🔴 beIN 1</div>
+        <div style="background:#16213e;border-radius:3px;padding:3px 8px;font-size:9px;display:flex;align-items:center;">beIN 2</div>
+        <div style="background:#16213e;border-radius:3px;padding:3px 8px;font-size:9px;display:flex;align-items:center;">RCTI</div>
+        <div style="background:#16213e;border-radius:3px;padding:3px 8px;font-size:9px;display:flex;align-items:center;">SCTV</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Player Atas, Channel Bawah</h3>
+      <p>Player dominan di atas, kategori & channel horizontal di bawah. Mirip YouTube TV.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0f0f0f;padding:12px;font-family:monospace;font-size:11px;color:#ccc;height:160px;display:flex;flex-direction:column;gap:4px;">
+      <div style="background:#1a1a2e;padding:6px 10px;border-radius:4px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="color:#e94560;font-weight:bold;font-size:12px;">📺 IPTV</span>
+        <span style="font-size:10px;">🔍 search...</span>
+      </div>
+      <div style="display:flex;gap:4px;flex:1;">
+        <div style="flex:1;background:#1a1a2e;border-radius:4px;display:flex;flex-direction:column;">
+          <div style="padding:4px 8px;font-size:9px;color:#888;border-bottom:1px solid #222;">PLAYLIST</div>
+          <div style="padding:3px 8px;font-size:9px;color:#e94560;">📋 MyPlaylist1</div>
+          <div style="padding:3px 8px;font-size:9px;">📋 MyPlaylist2</div>
+          <div style="padding:3px 8px;font-size:9px;color:#888;">+ Add M3U</div>
+        </div>
+        <div style="flex:1;background:#16213e;border-radius:4px;display:flex;flex-direction:column;">
+          <div style="padding:4px 8px;font-size:9px;color:#888;border-bottom:1px solid #222;">GROUPS</div>
+          <div style="padding:3px 8px;font-size:9px;color:#e94560;">🏆 Sport</div>
+          <div style="padding:3px 8px;font-size:9px;">📰 News</div>
+        </div>
+        <div style="flex:2;background:#0f0f0f;border-radius:4px;display:flex;flex-direction:column;gap:2px;padding:4px;">
+          <div style="background:#1a1a2e;border-radius:3px;flex:2;display:flex;align-items:center;justify-content:center;color:#555;font-size:11px;">▶ Player</div>
+          <div style="display:flex;flex-direction:column;gap:2px;flex:1;">
+            <div style="background:#16213e;border-radius:2px;padding:2px 5px;font-size:9px;">🔴 beIN Sports 1</div>
+            <div style="border-radius:2px;padding:2px 5px;font-size:9px;">beIN Sports 2</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — 3-Panel (Playlist → Group → Channel+Player)</h3>
+      <p>Panel kiri playlist, tengah grup, kanan channel list + player kecil. Cocok kalau banyak M3U.</p>
+    </div>
+  </div>
+</div>
