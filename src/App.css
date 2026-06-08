@@ -141,3 +141,22 @@ body { background: var(--bg); color: var(--text); font-family: system-ui, sans-s
   cursor: pointer; font-size: 0.75rem; opacity: 0.3; padding: 2px;
 }
 .fav-btn:hover, .fav-btn.faved { opacity: 1; }
+
+.player {
+  border-top: 1px solid #222;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+}
+.player-title {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 1rem; font-size: 0.85rem; background: var(--surface);
+  border-bottom: 1px solid #222;
+}
+.player-logo { width: 24px; height: 24px; object-fit: contain; }
+.player-video {
+  width: 100%;
+  max-height: 45vh;
+  background: #000;
+  display: block;
+}
