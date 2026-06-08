@@ -1,153 +1,159 @@
 /// <reference path="../pb_data/types.d.ts" />
 
-migrate((db) => {
-    const dao = new Dao(db)
+migrate((app) => {
 
     // ── playlists ─────────────────────────────────────────────────────────
-    // Stores M3U playlist metadata per user.
-    // Channels are not stored — they are fetched fresh from source_url each session.
     const playlists = new Collection({
         name: "playlists",
         type: "base",
-        schema: [
+        fields: [
             {
                 name: "user",
                 type: "relation",
                 required: true,
-                options: { collectionId: "_pb_users_auth_", cascadeDelete: true, minSelect: null, maxSelect: 1, displayFields: [] }
+                options: {
+                    collectionId: "_pb_users_auth_",
+                    cascadeDelete: true,
+                    maxSelect: 1,
+                }
             },
             {
                 name: "name",
                 type: "text",
                 required: true,
-                options: { min: 1, max: 100, pattern: "" }
+                options: { min: 1, max: 100 }
             },
             {
                 name: "source_url",
                 type: "url",
                 required: false,
-                options: { exceptDomains: [], onlyDomains: [] }
             },
         ],
-        listRule:   "@request.auth.id != '' && user = @request.auth.id",
-        viewRule:   "@request.auth.id != '' && user = @request.auth.id",
+        listRule:   "user = @request.auth.id",
+        viewRule:   "user = @request.auth.id",
         createRule: "@request.auth.id != '' && @request.data.user = @request.auth.id",
-        updateRule: "@request.auth.id != '' && user = @request.auth.id",
-        deleteRule: "@request.auth.id != '' && user = @request.auth.id",
+        updateRule: "user = @request.auth.id",
+        deleteRule: "user = @request.auth.id",
     })
-    dao.saveCollection(playlists)
+    app.save(playlists)
 
     // ── favorites ─────────────────────────────────────────────────────────
     const favorites = new Collection({
         name: "favorites",
         type: "base",
-        schema: [
+        fields: [
             {
                 name: "user",
                 type: "relation",
                 required: true,
-                options: { collectionId: "_pb_users_auth_", cascadeDelete: true, minSelect: null, maxSelect: 1, displayFields: [] }
+                options: {
+                    collectionId: "_pb_users_auth_",
+                    cascadeDelete: true,
+                    maxSelect: 1,
+                }
             },
             {
                 name: "playlist",
                 type: "relation",
                 required: true,
-                options: { collectionId: "playlists", cascadeDelete: true, minSelect: null, maxSelect: 1, displayFields: [] }
+                options: {
+                    collectionId: "playlists",
+                    cascadeDelete: true,
+                    maxSelect: 1,
+                }
             },
             {
                 name: "channel_url",
                 type: "text",
                 required: true,
-                options: { min: 1, max: null, pattern: "" }
             },
             {
                 name: "channel_name",
                 type: "text",
                 required: true,
-                options: { min: null, max: 200, pattern: "" }
             },
             {
                 name: "channel_logo",
                 type: "url",
                 required: false,
-                options: { exceptDomains: [], onlyDomains: [] }
             },
             {
                 name: "channel_group",
                 type: "text",
                 required: false,
-                options: { min: null, max: 100, pattern: "" }
             },
         ],
-        listRule:   "@request.auth.id != '' && user = @request.auth.id",
-        viewRule:   "@request.auth.id != '' && user = @request.auth.id",
+        listRule:   "user = @request.auth.id",
+        viewRule:   "user = @request.auth.id",
         createRule: "@request.auth.id != '' && @request.data.user = @request.auth.id",
-        updateRule: "@request.auth.id != '' && user = @request.auth.id",
-        deleteRule: "@request.auth.id != '' && user = @request.auth.id",
+        updateRule: "user = @request.auth.id",
+        deleteRule: "user = @request.auth.id",
     })
-    dao.saveCollection(favorites)
+    app.save(favorites)
 
     // ── history ───────────────────────────────────────────────────────────
     const history = new Collection({
         name: "history",
         type: "base",
-        schema: [
+        fields: [
             {
                 name: "user",
                 type: "relation",
                 required: true,
-                options: { collectionId: "_pb_users_auth_", cascadeDelete: true, minSelect: null, maxSelect: 1, displayFields: [] }
+                options: {
+                    collectionId: "_pb_users_auth_",
+                    cascadeDelete: true,
+                    maxSelect: 1,
+                }
             },
             {
                 name: "playlist",
                 type: "relation",
                 required: true,
-                options: { collectionId: "playlists", cascadeDelete: true, minSelect: null, maxSelect: 1, displayFields: [] }
+                options: {
+                    collectionId: "playlists",
+                    cascadeDelete: true,
+                    maxSelect: 1,
+                }
             },
             {
                 name: "channel_url",
                 type: "text",
                 required: true,
-                options: { min: 1, max: null, pattern: "" }
             },
             {
                 name: "channel_name",
                 type: "text",
                 required: true,
-                options: { min: null, max: 200, pattern: "" }
             },
             {
                 name: "channel_logo",
                 type: "url",
                 required: false,
-                options: { exceptDomains: [], onlyDomains: [] }
             },
             {
                 name: "channel_group",
                 type: "text",
                 required: false,
-                options: { min: null, max: 100, pattern: "" }
             },
             {
                 name: "watched_at",
                 type: "date",
                 required: true,
-                options: { min: "", max: "" }
             },
         ],
-        listRule:   "@request.auth.id != '' && user = @request.auth.id",
-        viewRule:   "@request.auth.id != '' && user = @request.auth.id",
+        listRule:   "user = @request.auth.id",
+        viewRule:   "user = @request.auth.id",
         createRule: "@request.auth.id != '' && @request.data.user = @request.auth.id",
         updateRule: null,
-        deleteRule: "@request.auth.id != '' && user = @request.auth.id",
+        deleteRule: "user = @request.auth.id",
     })
-    dao.saveCollection(history)
+    app.save(history)
 
-}, (db) => {
-    const dao = new Dao(db)
+}, (app) => {
     for (const name of ["history", "favorites", "playlists"]) {
         try {
-            dao.deleteCollection(dao.findCollectionByNameOrId(name))
+            app.delete(app.findCollectionByNameOrId(name))
         } catch (_) {}
     }
 })
