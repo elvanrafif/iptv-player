@@ -13,7 +13,12 @@ function read(key) {
 }
 
 function write(key, value) {
-  localStorage.setItem(key, JSON.stringify(value))
+  try {
+    localStorage.setItem(key, JSON.stringify(value))
+  } catch (e) {
+    console.error('[storage] Write failed:', e)
+    throw new Error('Storage penuh atau tidak tersedia. Data tidak tersimpan.')
+  }
 }
 
 export const storage = {
