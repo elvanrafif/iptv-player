@@ -1,5 +1,5 @@
 export function parseM3U(content, playlistId) {
-  const lines = content.split('\n').map(l => l.trim()).filter(Boolean)
+  const lines = content.split(/\r?\n/).map(l => l.trim()).filter(Boolean)
   const channels = []
 
   for (let i = 0; i < lines.length; i++) {

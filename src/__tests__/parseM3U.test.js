@@ -49,4 +49,11 @@ describe('parseM3U', () => {
   it('defaults missing group to "Umum"', () => {
     expect(channels[3].group).toBe('Umum')
   })
+
+  it('handles Windows line endings (CRLF)', () => {
+    const m3uCRLF = '#EXTM3U\r\n#EXTINF:-1,Test Channel\r\nhttp://example.com\r\n'
+    const result = parseM3U(m3uCRLF, 'test-id')
+    expect(result).toHaveLength(1)
+    expect(result[0].name).toBe('Test Channel')
+  })
 })
