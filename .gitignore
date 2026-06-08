@@ -2,6 +2,7 @@
 pb/pocketbase
 pb/pb_data
 pb/pb_public
+# pb_migrations is tracked (schema source of truth)
 
 # Frontend build artifacts
 fe/dist
