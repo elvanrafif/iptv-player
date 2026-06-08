@@ -11,17 +11,14 @@ migrate((app) => {
                 name: "user",
                 type: "relation",
                 required: true,
-                options: {
-                    collectionId: "_pb_users_auth_",
-                    cascadeDelete: true,
-                    maxSelect: 1,
-                }
+                collectionId: "_pb_users_auth_",
+                cascadeDelete: true,
+                maxSelect: 1,
             },
             {
                 name: "name",
                 type: "text",
                 required: true,
-                options: { min: 1, max: 100 }
             },
             {
                 name: "source_url",
@@ -31,7 +28,7 @@ migrate((app) => {
         ],
         listRule:   "user = @request.auth.id",
         viewRule:   "user = @request.auth.id",
-        createRule: "@request.auth.id != '' && @request.data.user = @request.auth.id",
+        createRule: "@request.auth.id != ''",
         updateRule: "user = @request.auth.id",
         deleteRule: "user = @request.auth.id",
     })
@@ -46,21 +43,17 @@ migrate((app) => {
                 name: "user",
                 type: "relation",
                 required: true,
-                options: {
-                    collectionId: "_pb_users_auth_",
-                    cascadeDelete: true,
-                    maxSelect: 1,
-                }
+                collectionId: "_pb_users_auth_",
+                cascadeDelete: true,
+                maxSelect: 1,
             },
             {
                 name: "playlist",
                 type: "relation",
                 required: true,
-                options: {
-                    collectionId: "playlists",
-                    cascadeDelete: true,
-                    maxSelect: 1,
-                }
+                collectionId: "playlists",
+                cascadeDelete: true,
+                maxSelect: 1,
             },
             {
                 name: "channel_url",
@@ -85,7 +78,7 @@ migrate((app) => {
         ],
         listRule:   "user = @request.auth.id",
         viewRule:   "user = @request.auth.id",
-        createRule: "@request.auth.id != '' && @request.data.user = @request.auth.id",
+        createRule: "@request.auth.id != ''",
         updateRule: "user = @request.auth.id",
         deleteRule: "user = @request.auth.id",
     })
@@ -100,21 +93,17 @@ migrate((app) => {
                 name: "user",
                 type: "relation",
                 required: true,
-                options: {
-                    collectionId: "_pb_users_auth_",
-                    cascadeDelete: true,
-                    maxSelect: 1,
-                }
+                collectionId: "_pb_users_auth_",
+                cascadeDelete: true,
+                maxSelect: 1,
             },
             {
                 name: "playlist",
                 type: "relation",
                 required: true,
-                options: {
-                    collectionId: "playlists",
-                    cascadeDelete: true,
-                    maxSelect: 1,
-                }
+                collectionId: "playlists",
+                cascadeDelete: true,
+                maxSelect: 1,
             },
             {
                 name: "channel_url",
@@ -144,7 +133,7 @@ migrate((app) => {
         ],
         listRule:   "user = @request.auth.id",
         viewRule:   "user = @request.auth.id",
-        createRule: "@request.auth.id != '' && @request.data.user = @request.auth.id",
+        createRule: "@request.auth.id != ''",
         updateRule: null,
         deleteRule: "user = @request.auth.id",
     })
