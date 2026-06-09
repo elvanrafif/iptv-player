@@ -2,17 +2,9 @@ import { useEffect, useState } from 'react'
 import * as api from '../api'
 import ChannelDetailModal from './ChannelDetailModal'
 
-export default function ChannelList({ view, activeChannel, onSelectChannel, channelCache, playlists, isAdmin }) {
+export default function ChannelList({ view, activeChannel, onSelectChannel, channelCache, playlists, isAdmin, favoriteMap, onToggleFav }) {
   const [channels, setChannels] = useState([])
-  const [favoriteMap, setFavoriteMap] = useState({}) // { channelUrl: pbRecordId }
   const [detailChannel, setDetailChannel] = useState(null)
-
-  async function refreshFavoriteMap() {
-    const map = await api.getFavoriteMap()
-    setFavoriteMap(map)
-  }
-
-  useEffect(() => { refreshFavoriteMap() }, [])
 
   useEffect(() => {
     if (!view) return setChannels([])
@@ -30,16 +22,12 @@ export default function ChannelList({ view, activeChannel, onSelectChannel, chan
     load()
   }, [view, channelCache])
 
-  async function toggleFav(e, channel) {
+  async function handleToggleFav(e, channel) {
     e.stopPropagation()
-    const favId = favoriteMap[channel.url]
-    if (favId) {
-      setFavoriteMap(prev => { const n = { ...prev }; delete n[channel.url]; return n })
-      await api.removeFavorite(favId)
-      if (view?.type === 'favorites') setChannels(prev => prev.filter(c => c.url !== channel.url))
-    } else {
-      const record = await api.addFavorite(channel)
-      setFavoriteMap(prev => ({ ...prev, [channel.url]: record.id }))
+    const wasFavorited = !!favoriteMap[channel.url]
+    await onToggleFav(channel)
+    if (wasFavorited && view?.type === 'favorites') {
+      setChannels(prev => prev.filter(c => c.url !== channel.url))
     }
   }
 
@@ -79,7 +67,7 @@ export default function ChannelList({ view, activeChannel, onSelectChannel, chan
             {isAdmin && (
               <button
                 className={`fav-btn ${favoriteMap[ch.url] ? 'faved' : ''}`}
-                onClick={e => toggleFav(e, ch)}
+                onClick={e => handleToggleFav(e, ch)}
                 title="Toggle favorit"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
