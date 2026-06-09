@@ -854,6 +854,36 @@ body {
   border-bottom: 1px solid var(--border-subtle);
   color: var(--text);
   flex-shrink: 0;
+  justify-content: space-between;
+}
+
+.player-title-left {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+}
+
+.player-title-left span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-fav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  opacity: 0.4;
+  transition: opacity 0.15s;
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.player-fav-btn:hover,
+.player-fav-btn.faved {
+  opacity: 1;
 }
 
 .player-logo {
