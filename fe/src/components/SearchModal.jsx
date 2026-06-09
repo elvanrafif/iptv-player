@@ -1,9 +1,16 @@
 import { useEffect, useRef } from 'react'
 
-export default function SearchModal({ channelCache, playlists, query, onQueryChange, onSelectChannel, onClose, activeChannel }) {
+export default function SearchModal({ channelCache, playlists, query, onQueryChange, onSelectChannel, onClose, activeChannel, savedScrollTop, onScrollSave }) {
   const inputRef = useRef(null)
+  const resultsRef = useRef(null)
 
   useEffect(() => { inputRef.current?.focus() }, [])
+
+  useEffect(() => {
+    if (resultsRef.current && savedScrollTop) {
+      resultsRef.current.scrollTop = savedScrollTop
+    }
+  }, [])
 
   useEffect(() => {
     function onKey(e) { if (e.key === 'Escape') onClose() }
@@ -43,7 +50,7 @@ export default function SearchModal({ channelCache, playlists, query, onQueryCha
             <button className="search-clear" onClick={() => onQueryChange('')}>✕</button>
           )}
         </div>
-        <div className="search-results">
+        <div className="search-results" ref={resultsRef} onScroll={e => onScrollSave(e.currentTarget.scrollTop)}>
           {!q && <div className="search-hint">Ketik nama channel dari semua playlist</div>}
           {q && results.length === 0 && <div className="search-hint">Tidak ada channel ditemukan untuk "{query}"</div>}
           {results.map((ch, i) => (

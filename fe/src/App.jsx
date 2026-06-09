@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import pb from './lib/pb'
 import * as api from './api'
 import Sidebar from './components/Sidebar'
@@ -18,6 +18,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [channelCache, setChannelCache] = useState({})
   const [loading, setLoading] = useState({})
+  const searchScrollRef = useRef(0)
   const [favoriteMap, setFavoriteMap] = useState({})
 
   const isAdmin = user?.role === 'admin'
@@ -136,6 +137,8 @@ export default function App() {
           onSelectChannel={setActiveChannel}
           onClose={() => setShowSearch(false)}
           activeChannel={activeChannel}
+          savedScrollTop={searchScrollRef.current}
+          onScrollSave={pos => { searchScrollRef.current = pos }}
         />
       )}
     </div>
