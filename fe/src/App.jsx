@@ -100,7 +100,14 @@ export default function App() {
         />
       </aside>
       <main className="main">
-        {activeChannel && <Player channel={activeChannel} />}
+        {activeChannel && (
+          <Player
+            channel={activeChannel}
+            isFavorited={!!favoriteMap[activeChannel.url]}
+            onToggleFavorite={() => toggleFav(activeChannel)}
+            isAdmin={isAdmin}
+          />
+        )}
         <ChannelList
           view={activeView}
           activeChannel={activeChannel}
