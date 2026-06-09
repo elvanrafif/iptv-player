@@ -18,8 +18,25 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [channelCache, setChannelCache] = useState({})
   const [loading, setLoading] = useState({})
+  const [favoriteMap, setFavoriteMap] = useState({})
 
   const isAdmin = user?.role === 'admin'
+
+  const refreshFavoriteMap = useCallback(async () => {
+    const map = await api.getFavoriteMap()
+    setFavoriteMap(map)
+  }, [])
+
+  async function toggleFav(channel) {
+    const favId = favoriteMap[channel.url]
+    if (favId) {
+      setFavoriteMap(prev => { const n = { ...prev }; delete n[channel.url]; return n })
+      await api.removeFavorite(favId)
+    } else {
+      const record = await api.addFavorite(channel)
+      setFavoriteMap(prev => ({ ...prev, [channel.url]: record.id }))
+    }
+  }
 
   useEffect(() => {
     return pb.authStore.onChange((_, model) => setUser(model))
@@ -46,7 +63,8 @@ export default function App() {
         if (pl.source_url) fetchPlaylistChannels({ id: pl.id, sourceUrl: pl.source_url })
       })
     })
-  }, [user, fetchPlaylistChannels])
+    refreshFavoriteMap()
+  }, [user, fetchPlaylistChannels, refreshFavoriteMap])
 
   function handlePlaylistAdded(playlist, channels) {
     setPlaylists(prev => [...prev, playlist])
@@ -90,6 +108,8 @@ export default function App() {
           channelCache={channelCache}
           playlists={playlists}
           isAdmin={isAdmin}
+          favoriteMap={favoriteMap}
+          onToggleFav={toggleFav}
         />
       </main>
       {showSearch && (
