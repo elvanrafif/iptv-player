@@ -27,7 +27,7 @@ export default function App() {
     setFavoriteMap(map)
   }, [])
 
-  async function toggleFav(channel) {
+  const toggleFav = useCallback(async (channel) => {
     const favId = favoriteMap[channel.url]
     if (favId) {
       setFavoriteMap(prev => { const n = { ...prev }; delete n[channel.url]; return n })
@@ -36,7 +36,7 @@ export default function App() {
       const record = await api.addFavorite(channel)
       setFavoriteMap(prev => ({ ...prev, [channel.url]: record.id }))
     }
-  }
+  }, [favoriteMap])
 
   useEffect(() => {
     return pb.authStore.onChange((_, model) => setUser(model))
