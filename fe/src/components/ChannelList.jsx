@@ -20,7 +20,7 @@ export default function ChannelList({ view, activeChannel, onSelectChannel, chan
       }
     }
     load()
-  }, [view, channelCache])
+  }, [view, channelCache, favoriteMap])
 
   async function handleToggleFav(e, channel) {
     e.stopPropagation()
