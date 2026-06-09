@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-export default function SearchModal({ channelCache, playlists, query, onQueryChange, onSelectChannel, onClose }) {
+export default function SearchModal({ channelCache, playlists, query, onQueryChange, onSelectChannel, onClose, activeChannel }) {
   const inputRef = useRef(null)
 
   useEffect(() => { inputRef.current?.focus() }, [])
@@ -47,7 +47,7 @@ export default function SearchModal({ channelCache, playlists, query, onQueryCha
           {!q && <div className="search-hint">Ketik nama channel dari semua playlist</div>}
           {q && results.length === 0 && <div className="search-hint">Tidak ada channel ditemukan untuk "{query}"</div>}
           {results.map((ch, i) => (
-            <button key={`${ch.url}-${i}`} className="search-result-item" onClick={() => handleSelect(ch)}>
+            <button key={`${ch.url}-${i}`} className={`search-result-item ${activeChannel?.url === ch.url ? 'active' : ''}`} onClick={() => handleSelect(ch)}>
               {ch.logo
                 ? <img src={ch.logo} alt="" className="search-result-logo" onError={e => { e.target.style.display = 'none' }} />
                 : <div className="search-result-logo-placeholder">📺</div>

@@ -497,6 +497,11 @@ body {
   background: var(--surface-hover);
 }
 
+.search-result-item.active {
+  background: var(--accent-dim);
+  border-left: 3px solid var(--accent);
+}
+
 .search-result-logo {
   width: 34px;
   height: 34px;

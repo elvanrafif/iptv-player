@@ -135,6 +135,7 @@ export default function App() {
           onQueryChange={setSearchQuery}
           onSelectChannel={setActiveChannel}
           onClose={() => setShowSearch(false)}
+          activeChannel={activeChannel}
         />
       )}
     </div>
