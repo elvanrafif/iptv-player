@@ -31,10 +31,18 @@ export default function App() {
     const favId = favoriteMap[channel.url]
     if (favId) {
       setFavoriteMap(prev => { const n = { ...prev }; delete n[channel.url]; return n })
-      await api.removeFavorite(favId)
+      try {
+        await api.removeFavorite(favId)
+      } catch {
+        setFavoriteMap(prev => ({ ...prev, [channel.url]: favId }))
+      }
     } else {
-      const record = await api.addFavorite(channel)
-      setFavoriteMap(prev => ({ ...prev, [channel.url]: record.id }))
+      try {
+        const record = await api.addFavorite(channel)
+        setFavoriteMap(prev => ({ ...prev, [channel.url]: record.id }))
+      } catch {
+        // state unchanged — no rollback needed since we didn't update yet
+      }
     }
   }, [favoriteMap])
 
